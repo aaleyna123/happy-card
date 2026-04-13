@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            cursor: pointer;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            border: 3px solid #667eea;
+        }
+
+        .card-front h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .card-front p {
+            font-size: 1.3em;
+            font-weight: 300;
+            letter-spacing: 2px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .balloons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50% 50% 50% 0;
+            opacity: 0.8;
+            animation: float 3s ease-in infinite;
+        }
+
+        .balloon1 {
+            background: #ff6b6b;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .balloon2 {
+            background: #ffd93d;
+            left: 30%;
+            animation-delay: 0.5s;
+        }
+
+        .balloon3 {
+            background: #6bcf7f;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .balloon4 {
+            background: #4d96ff;
+            left: 70%;
+            animation-delay: 1.5s;
+        }
+
+        .balloon5 {
+            background: #ff85c0;
+            left: 85%;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                bottom: -60px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: translateX(30px);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .card-back h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .card-back p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .card-front h1 {
+                font-size: 2.5em;
+            }
+
+            .card-front p {
+                font-size: 1.1em;
+            }
+
+            .card-container {
+                height: 350px;
+            }
+
+            .card-face {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" id="cardContainer">
+        <div class="card" id="card">
+            <!-- Front of card -->
+            <div class="card-face card-front">
+                <div class="balloons">
+                    <div class="balloon balloon1"></div>
+                    <div class="balloon balloon2"></div>
+                    <div class="balloon balloon3"></div>
+                    <div class="balloon balloon4"></div>
+                    <div class="balloon balloon5"></div>
+                </div>
+                <h1>🎉 Happy Birthday! 🎉</h1>
+                <p>Click the card to reveal your message</p>
+                <div class="hint">→ Click to flip →</div>
+            </div>
+
+            <!-- Back of card -->
+            <div class="card-face card-back">
+                <h2>To Someone Special</h2>
+                <div class="message-box">
+                    <p>Wishing you a day filled with joy, laughter, and wonderful moments with the people you love most.</p>
+                    <p>May this year bring you success, happiness, and all the blessings you deserve!</p>
+                    <p style="margin-bottom: 0; font-style: italic; margin-top: 15px;">With warmest wishes,</p>
+                    <p style="margin-bottom: 0;">Your Friend</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const cardContainer = document.getElementById('cardContainer');
+
+        // Flip card on click
+        cardContainer.addEventListener('click', function() {
+            card.classList.toggle('flipped');
+            if (card.classList.contains('flipped')) {
+                createConfetti();
+            }
+        });
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff85c0'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `fall ${2 + Math.random()}s linear forwards`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 2500);
+            }
+        }
+
+        // Add falling animation for confetti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Keyboard support - flip with spacebar
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                cardContainer.click();
+            }
+        });
+    </script>
+</body>
+</html>
