@@ -19,13 +19,14 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
+            overflow: hidden;
         }
 
         .card-container {
             perspective: 1000px;
             width: 100%;
             max-width: 500px;
-            height: 400px;
+            height: 450px;
             cursor: pointer;
         }
 
@@ -46,216 +47,156 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 30px;
         }
 
+        /* ÖN YÜZ */
         .card-front {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        .card-back {
-            background: white;
-            color: #333;
-            transform: rotateY(180deg);
-            border: 3px solid #667eea;
+        /* Emojilerin yan yana kalmasını sağlayan düzenleme */
+        .birthday-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
         }
 
         .card-front h1 {
-            font-size: 3.5em;
-            margin-bottom: 20px;
+            font-size: 2.8em;
+            margin: 0;
+            white-space: nowrap; /* Yazının kırılmasını önler */
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .front-emoji {
+            font-size: 2.5em;
             animation: slideDown 0.8s ease-out;
         }
 
         .card-front p {
-            font-size: 1.3em;
+            font-size: 1.2em;
+            margin-top: 20px;
             font-weight: 300;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             animation: slideUp 0.8s ease-out;
         }
 
-        .balloons {
-            position: absolute;
+        /* ARKA YÜZ */
+        .card-back {
+            background: #ffffff;
+            color: #333;
+            transform: rotateY(180deg);
+            border: 6px double #667eea;
+            position: relative;
+        }
+
+        /* Dekoratif Köşeler */
+        .card-back::before { content: '🎂'; position: absolute; top: 15px; left: 15px; font-size: 1.5em; opacity: 0.5; }
+        .card-back::after { content: '🎁'; position: absolute; bottom: 15px; right: 15px; font-size: 1.5em; opacity: 0.5; }
+
+        .card-back h2 {
+            font-size: 1.8em;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            border-radius: 20px;
         }
 
-        .balloon {
-            position: absolute;
-            width: 40px;
-            height: 50px;
-            border-radius: 50% 50% 50% 0;
-            opacity: 0.8;
-            animation: float 3s ease-in infinite;
+        .message-box p {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
 
-        .balloon1 {
-            background: #ff6b6b;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .balloon2 {
-            background: #ffd93d;
-            left: 30%;
-            animation-delay: 0.5s;
-        }
-
-        .balloon3 {
-            background: #6bcf7f;
-            left: 50%;
-            animation-delay: 1s;
-        }
-
-        .balloon4 {
-            background: #4d96ff;
-            left: 70%;
-            animation-delay: 1.5s;
-        }
-
-        .balloon5 {
-            background: #ff85c0;
-            left: 85%;
-            animation-delay: 0.2s;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        /* Balonlar */
+        .balloons { position: absolute; width: 100%; height: 100%; overflow: hidden; border-radius: 20px; pointer-events: none; }
+        .balloon { position: absolute; width: 40px; height: 50px; border-radius: 50% 50% 50% 0; opacity: 0.8; animation: float 4s ease-in infinite; }
+        .balloon1 { background: #ff6b6b; left: 10%; animation-delay: 0s; }
+        .balloon2 { background: #ffd93d; left: 30%; animation-delay: 1s; }
+        .balloon3 { background: #6bcf7f; left: 50%; animation-delay: 2s; }
+        .balloon4 { background: #4d96ff; left: 80%; animation-delay: 0.5s; }
+        
         @keyframes float {
-            0% {
-                bottom: -60px;
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.8;
-            }
-            100% {
-                bottom: 100%;
-                opacity: 0;
-                transform: translateX(30px);
-            }
+            0% { bottom: -70px; opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { bottom: 100%; opacity: 0; transform: translateX(20px); }
         }
 
-        .confetti {
-            position: fixed;
-            pointer-events: none;
+        /* Konfeti */
+        .confetti { position: fixed; top: -10px; pointer-events: none; z-index: 999; }
+        
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         .hint {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.9em;
-            opacity: 0.7;
+            bottom: 25px;
+            font-size: 0.85em;
+            opacity: 0.6;
             animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
 
-        .card-back h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #667eea;
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card-back p {
-            font-size: 1.1em;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .message-box {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #667eea;
-        }
-
+        /* Mobil Ayarlar */
         @media (max-width: 600px) {
-            .card-front h1 {
-                font-size: 2.5em;
-            }
-
-            .card-front p {
-                font-size: 1.1em;
-            }
-
-            .card-container {
-                height: 350px;
-            }
-
-            .card-face {
-                padding: 30px;
-            }
+            .card-front h1 { font-size: 1.8em; }
+            .front-emoji { font-size: 1.6em; }
+            .card-container { height: 420px; }
+            .birthday-title { gap: 8px; }
         }
     </style>
 </head>
 <body>
+
     <div class="card-container" id="cardContainer">
         <div class="card" id="card">
-            <!-- Front of card -->
             <div class="card-face card-front">
                 <div class="balloons">
                     <div class="balloon balloon1"></div>
                     <div class="balloon balloon2"></div>
                     <div class="balloon balloon3"></div>
                     <div class="balloon balloon4"></div>
-                    <div class="balloon balloon5"></div>
                 </div>
-                <h1>🎉 Happy Birthday! 🎉</h1>
-                <p>Click the card to reveal your message</p>
-                <div class="hint">→ Click to flip →</div>
+                
+                <div class="birthday-title">
+                    <span class="front-emoji">🎉</span>
+                    <h1>Happy Birthday!</h1>
+                    <span class="front-emoji">🎉</span>
+                </div>
+                
+                <p>Click to reveal your message</p>
+                <div class="hint">→ TAP TO FLIP ←</div>
             </div>
 
-            <!-- Back of card -->
             <div class="card-face card-back">
+                <div style="font-size: 2.5em; margin-bottom: 10px;">✨</div>
                 <h2>To Someone Special</h2>
                 <div class="message-box">
-                    <p>Wishing you a day filled with joy, laughter, and wonderful moments with the people you love most.</p>
-                    <p>May this year bring you success, happiness, and all the blessings you deserve!</p>
-                    <p style="margin-bottom: 0; font-style: italic; margin-top: 15px;">With warmest wishes,</p>
-                    <p style="margin-bottom: 0;">Your Friend</p>
+                    <p>May every moment of your life be as colorful and beautiful as you are. Happy birthday!</p>
+                    <p>Every moment spent with you is precious. May all your dreams come true in your new year!</p>
+                    <p style="font-style: italic; margin-top: 15px; color: #764ba2; font-weight: bold;">Your Best Friend</p>
                 </div>
             </div>
         </div>
@@ -264,52 +205,41 @@
     <script>
         const card = document.getElementById('card');
         const cardContainer = document.getElementById('cardContainer');
+        let confettiInterval;
 
-        // Flip card on click
         cardContainer.addEventListener('click', function() {
             card.classList.toggle('flipped');
+            
             if (card.classList.contains('flipped')) {
-                createConfetti();
+                // Konfeti döngüsü başlat
+                createConfetti(); 
+                confettiInterval = setInterval(createConfetti, 600);
+            } else {
+                // Kart kapandığında konfetiyi durdur
+                clearInterval(confettiInterval);
             }
         });
 
-        // Create confetti effect
         function createConfetti() {
-            const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff85c0'];
-            for (let i = 0; i < 30; i++) {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff85c0', '#ffffff'];
+            for (let i = 0; i < 15; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.width = Math.random() * 8 + 4 + 'px';
                 confetti.style.height = confetti.style.width;
                 confetti.style.borderRadius = '50%';
                 confetti.style.animation = `fall ${2 + Math.random()}s linear forwards`;
                 document.body.appendChild(confetti);
-
-                setTimeout(() => confetti.remove(), 2500);
+                setTimeout(() => confetti.remove(), 3000);
             }
         }
 
-        // Add falling animation for confetti
+        // Animasyon stili
         const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                to {
-                    transform: translateY(100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
+        style.textContent = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }`;
         document.head.appendChild(style);
-
-        // Keyboard support - flip with spacebar
-        document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                cardContainer.click();
-            }
-        });
     </script>
 </body>
 </html>
