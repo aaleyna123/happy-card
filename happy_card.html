@@ -252,34 +252,49 @@
             playBirthdayMelody();
         }
 
-        function playBirthdayMelody() {
-            if (!isPlaying) return;
+      function startContinuousMusic() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
 
-            const notes = [
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 294, duration: 0.4 },  // D
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 349, duration: 0.4 },  // F
-                { freq: 330, duration: 0.8 },  // E
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 294, duration: 0.4 },  // D
-                { freq: 262, duration: 0.4 },  // C
-                { freq: 392, duration: 0.4 },  // G
-                { freq: 349, duration: 0.8 },  // F
-            ];
+    if (!isPlaying) {
+        isPlaying = true;
+        musicBtn.textContent = '🔊 Müzik Çalıyor';
+        musicBtn.classList.add('playing');
+        playBirthdayMelody(); // Müziği başlat
+    }
+}
 
-            let time = audioContext.currentTime;
-            notes.forEach(note => {
-                playNote(note.freq, time, note.duration);
-                time += note.duration;
-            });
+function playBirthdayMelody() {
+    if (!isPlaying) return;
 
-            // Melodiyi devamlı tekrarla
-            setTimeout(playBirthdayMelody, time * 1000);
-        }
 
+    const notes = [
+        // 1. Mısra: İyi ki doğ-dun sa-na
+        { freq: 262, duration: 0.3 }, { freq: 262, duration: 0.1 }, { freq: 294, duration: 0.4 }, { freq: 262, duration: 0.4 }, { freq: 349, duration: 0.4 }, { freq: 330, duration: 0.8 }, 
+        
+        // 2. Mısra: İyi ki doğ-dun sa-na
+        { freq: 262, duration: 0.3 }, { freq: 262, duration: 0.1 }, { freq: 294, duration: 0.4 }, { freq: 262, duration: 0.4 }, { freq: 392, duration: 0.4 }, { freq: 349, duration: 0.8 }, 
+
+        // 3. Mısra: İyi ki doğ-dun iyi ki doğ-dun (Yükseliş)
+        { freq: 262, duration: 0.3 }, { freq: 262, duration: 0.1 }, { freq: 523, duration: 0.4 }, { freq: 440, duration: 0.4 }, { freq: 349, duration: 0.4 }, { freq: 330, duration: 0.4 }, { freq: 294, duration: 0.8 }, 
+
+        // 4. Mısra: Mut-lu yıl-lar sa-na
+        { freq: 466, duration: 0.3 }, { freq: 466, duration: 0.1 }, { freq: 440, duration: 0.4 }, { freq: 349, duration: 0.4 }, { freq: 392, duration: 0.4 }, { freq: 349, duration: 1.2 } 
+    ];
+
+    let startTime = audioContext.currentTime;
+    let totalDuration = 0;
+
+    notes.forEach(note => {
+        playNote(note.freq, startTime + totalDuration, note.duration);
+        totalDuration += note.duration;
+    });
+
+    setTimeout(() => {
+        if (isPlaying) playBirthdayMelody();
+    }, (totalDuration * 1000) + 500);
+}
         function playNote(freq, time, duration) {
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
